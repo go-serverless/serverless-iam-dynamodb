@@ -16,6 +16,8 @@ import (
 	"gopkg.in/go-playground/validator.v9"
 
 	"github.com/satori/go.uuid"
+
+	utils "../utils"
 )
 
 type User struct {
@@ -25,6 +27,7 @@ type User struct {
 	LastName      *string `json:"last_name,omitempty"`
 	Age           *int    `json:"age,omitempty"`
 	Phone         *string `json:"phone,omitempty"`
+	Password      string  `json:"password" validate:"required,min=4,max=50"`
 	Email         string  `json:"email" validate:"required,email"`
 	Role          string  `json:"role" validate:"required,min=4,max=20"`
 	IsActive      bool    `json:"is_active" validate:"required"`
@@ -71,6 +74,18 @@ func Create(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 	validate = validator.New()
 	err := validate.Struct(user)
 	if err != nil {
+		// Error HTTP response
+		return events.APIGatewayProxyResponse{
+			Body:       err.Error(),
+			StatusCode: 400,
+		}, nil
+	}
+
+	// Encrypt password
+	user.Password, err = utils.HashPassword(user.Password)
+	if err != nil {
+		fmt.Println("Got error calling HashPassword:")
+		fmt.Println(err.Error())
 		// Error HTTP response
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
