@@ -1,0 +1,107 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: serverless-iam-dynamodb
+
+custom:
+  iamTableName: ${self:service}-${self:provider.stage}-iam
+  iamTableArn: # ARNs are addresses of deployed services in AWS space
+    Fn::Join:
+    - ":"
+    - - arn
+      - aws
+      - dynamodb
+      - Ref: AWS::Region
+      - Ref: AWS::AccountId
+      - table/${self:custom.iamTableName}
+
+provider:
+  name: aws
+  runtime: go1.x
+  stage: dev
+  region: ap-southeast-1
+  environment:
+    IAM_TABLE_NAME: ${self:custom.iamTableName}
+  iamRoleStatements: # Defines what other AWS services our lambda functions can access
+    - Effect: Allow # Allow access to DynamoDB tables
+      Action:
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - ${self:custom.iamTableArn}
+
+package:
+ individually: true
+ exclude:
+   - ./**
+
+functions:
+  list:
+    handler: bin/handlers/listHandler
+    package:
+     include:
+       - ./bin/handlers/listHandler
+    events:
+      - http:
+          path: iam
+          method: get
+          cors: true
+  create:
+    handler: bin/handlers/createHandler
+    package:
+      include:
+        - ./bin/handlers/createHandler
+    events:
+      - http:
+          path: iam
+          method: post
+          cors: true
+  update:
+    handler: bin/handlers/updateHandler
+    package:
+      include:
+        - ./bin/handlers/updateHandler
+    events:
+      - http:
+          path: iam/{id}
+          method: patch
+          cors: true
+  delete:
+      handler: bin/handlers/deleteHandler
+      package:
+        include:
+          - ./bin/handlers/deleteHandler
+      events:
+        - http:
+            path: iam/{id}
+            method: delete
+            cors: true
+
+resources:
+  Resources: # Supporting AWS services
+    iamTable: # Define a new DynamoDB Table resource to store iam items
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.iamTableName}
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
