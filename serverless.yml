@@ -80,16 +80,25 @@ functions:
           method: patch
           cors: true
   delete:
-      handler: bin/handlers/deleteHandler
-      package:
-        include:
-          - ./bin/handlers/deleteHandler
-      events:
-        - http:
-            path: iam/{id}
-            method: delete
-            cors: true
-
+    handler: bin/handlers/deleteHandler
+    package:
+      include:
+        - ./bin/handlers/deleteHandler
+    events:
+      - http:
+          path: iam/{id}
+          method: delete
+          cors: true
+  get:
+    handler: bin/handlers/getHandler
+    package:
+      include:
+        - ./bin/handlers/getHandler
+    events:
+      - http:
+          path: iam/{id}
+          method: get
+          cors: true
 resources:
   Resources: # Supporting AWS services
     iamTable: # Define a new DynamoDB Table resource to store iam items
