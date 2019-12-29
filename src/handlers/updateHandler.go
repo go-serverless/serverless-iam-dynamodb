@@ -80,7 +80,7 @@ func Update(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 
 	for i := 0; i < u.NumField(); i++ {
 		f := u.Field(i)
-		// check if it is nil
+		// check if it is empty
 		if !reflect.DeepEqual(f.Interface(), reflect.Zero(f.Type()).Interface()) {
 			jsonFieldName := t.Field(i).Name
 			// get json field name
