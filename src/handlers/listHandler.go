@@ -30,8 +30,8 @@ type User struct {
 	DeactivatedAt string `json:"deactivated_at"`
 }
 
-type ListUsersResponse struct {
-	Users []User `json: "users"`
+type Response struct {
+	Response []User `json:"response"`
 }
 
 var ddbSvc *dynamodb.DynamoDB
@@ -86,10 +86,11 @@ func List(ctx context.Context, request events.APIGatewayProxyRequest) (events.AP
 		users = append(users, user)
 	}
 
-	// Success HTTP response
-	body, _ := json.Marshal(&ListUsersResponse{
-		Users: users,
+	body, _ := json.Marshal(&Response{
+		Response: users,
 	})
+
+	// Success HTTP response
 	return events.APIGatewayProxyResponse{
 		Body:       string(body),
 		StatusCode: 200,
