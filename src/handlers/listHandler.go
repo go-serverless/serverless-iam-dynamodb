@@ -15,18 +15,19 @@ import (
 )
 
 type User struct {
-	ID            string  `json:"id" validate:"required"`
-	UserName      string  `json:"user_name" validate:"required,min=4,max=20"`
-	FirstName     *string `json:"first_name,omitempty"`
-	LastName      *string `json:"last_name,omitempty"`
-	Age           *int    `json:"age,omitempty"`
-	Phone         *string `json:"phone,omitempty"`
-	Email         string  `json:"email" validate:"required,email"`
-	Role          string  `json:"role" validate:"required,min=4,max=20"`
-	IsActive      bool    `json:"is_active" validate:"required"`
-	CreatedAt     string  `json:"created_at" validate:"required`
-	ModifiedAt    string  `json:"modified_at" validate:"required`
-	DeactivatedAt *string `json:"deactivated_at,omitempty"`
+	ID            string `json:"id"`
+	UserName      string `json:"user_name"`
+	FirstName     string `json:"first_name"`
+	LastName      string `json:"last_name"`
+	Age           int    `json:"age"`
+	Phone         string `json:"phone"`
+	Password      string `json:"password"`
+	Email         string `json:"email"`
+	Role          string `json:"role"`
+	IsActive      bool   `json:"is_active"`
+	CreatedAt     string `json:"created_at"`
+	ModifiedAt    string `json:"modified_at"`
+	DeactivatedAt string `json:"deactivated_at"`
 }
 
 type ListUsersResponse struct {
@@ -63,6 +64,7 @@ func List(ctx context.Context, request events.APIGatewayProxyRequest) (events.AP
 	if err != nil {
 		fmt.Println("Query API call failed:")
 		fmt.Println((err.Error()))
+		// Error HTTP response
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
 			StatusCode: 400,
