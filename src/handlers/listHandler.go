@@ -71,7 +71,7 @@ func List(ctx context.Context, request events.APIGatewayProxyRequest) (events.AP
 		}, nil
 	}
 
-	// Construct users from response
+	// Construct final response
 	var users []User
 	for _, i := range result.Items {
 		user := User{}
