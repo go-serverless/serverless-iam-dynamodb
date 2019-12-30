@@ -36,12 +36,17 @@ provider:
     - Effect: Allow # Allow access to DynamoDB tables
       Action:
         - dynamodb:Scan
+        - dynamodb:Query
         - dynamodb:GetItem
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
         - ${self:custom.iamTableArn}
+        - Fn::Join:
+          - /
+          - - ${self:custom.iamTableArn}
+            - index/*
 
 package:
  individually: true
@@ -49,6 +54,11 @@ package:
    - ./**
 
 functions:
+  auth:
+    package:
+      include:
+        - ./bin/handlers/authHandler
+    handler: bin/handlers/authHandler
   list:
     handler: bin/handlers/listHandler
     package:
@@ -59,6 +69,7 @@ functions:
           path: iam
           method: get
           cors: true
+          authorizer: auth
   create:
     handler: bin/handlers/createHandler
     package:
@@ -69,6 +80,7 @@ functions:
           path: iam
           method: post
           cors: true
+          authorizer: auth
   update:
     handler: bin/handlers/updateHandler
     package:
@@ -79,6 +91,7 @@ functions:
           path: iam/{id}
           method: patch
           cors: true
+          authorizer: auth
   delete:
     handler: bin/handlers/deleteHandler
     package:
@@ -88,6 +101,17 @@ functions:
       - http:
           path: iam/{id}
           method: delete
+          cors: true
+          authorizer: auth
+  login:
+    handler: bin/handlers/loginHandler
+    package:
+      include:
+        - ./bin/handlers/loginHandler
+    events:
+      - http:
+          path: iam/login
+          method: post
           cors: true
   get:
     handler: bin/handlers/getHandler
@@ -111,6 +135,18 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: user_name
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: IAM_GSI
+            KeySchema:
+              - AttributeName: user_name
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 5
+              WriteCapacityUnits: 5
