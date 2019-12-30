@@ -34,7 +34,7 @@ type Response struct {
 	Response User `json:"response"`
 }
 
-var ddbSvc *dynamodb.DynamoDB
+var svc *dynamodb.DynamoDB
 
 func init() {
 	region := os.Getenv("AWS_REGION")
@@ -45,7 +45,7 @@ func init() {
 		fmt.Println(fmt.Sprintf("Failed to initialize a session to AWS: %s", err.Error()))
 	} else {
 		// Create DynamoDB client
-		ddbSvc = dynamodb.New(session)
+		svc = dynamodb.New(session)
 	}
 }
 
@@ -55,7 +55,7 @@ func Get(ctx context.Context, request events.APIGatewayProxyRequest) (events.API
 		id        = aws.String(request.PathParameters["id"])
 	)
 
-	result, err := ddbSvc.GetItem(&dynamodb.GetItemInput{
+	result, err := svc.GetItem(&dynamodb.GetItemInput{
 		TableName: tableName,
 		Key: map[string]*dynamodb.AttributeValue{
 			"id": {
@@ -83,7 +83,7 @@ func Get(ctx context.Context, request events.APIGatewayProxyRequest) (events.API
 			StatusCode: 500,
 		}, nil
 	}
- 
+
 	body, _ := json.Marshal(&Response{
 		Response: user,
 	})

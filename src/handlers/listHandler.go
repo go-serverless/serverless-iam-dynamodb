@@ -34,7 +34,7 @@ type Response struct {
 	Response []User `json:"response"`
 }
 
-var ddbSvc *dynamodb.DynamoDB
+var svc *dynamodb.DynamoDB
 
 func init() {
 	region := os.Getenv("AWS_REGION")
@@ -45,7 +45,7 @@ func init() {
 		fmt.Println(fmt.Sprintf("Failed to initialize a session to AWS: %s", err.Error()))
 	} else {
 		// Create DynamoDB client
-		ddbSvc = dynamodb.New(session)
+		svc = dynamodb.New(session)
 	}
 }
 
@@ -60,7 +60,7 @@ func List(ctx context.Context, request events.APIGatewayProxyRequest) (events.AP
 	}
 
 	// Make the DynamoDB Query API call
-	result, err := ddbSvc.Scan(params)
+	result, err := svc.Scan(params)
 	if err != nil {
 		fmt.Println("Query API call failed:")
 		fmt.Println((err.Error()))

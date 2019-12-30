@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-var ddbSvc *dynamodb.DynamoDB
+var svc *dynamodb.DynamoDB
 
 func init() {
 	region := os.Getenv("AWS_REGION")
@@ -28,7 +28,7 @@ func init() {
 		fmt.Println(fmt.Sprintf("Failed to initialize a session to AWS: %s", err.Error()))
 	} else {
 		// Create DynamoDB client
-		ddbSvc = dynamodb.New(session)
+		svc = dynamodb.New(session)
 	}
 }
 
@@ -118,7 +118,7 @@ func Update(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 		ReturnValues:              aws.String("UPDATED_NEW"),
 		TableName:                 tableName,
 	}
-	_, err = ddbSvc.UpdateItem(input)
+	_, err = svc.UpdateItem(input)
 	if err != nil {
 		fmt.Println("Got error calling UpdateItem:")
 		fmt.Println(err.Error())

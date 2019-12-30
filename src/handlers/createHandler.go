@@ -36,7 +36,7 @@ type User struct {
 	DeactivatedAt *string `json:"deactivated_at,omitempty"`
 }
 
-var ddbSvc *dynamodb.DynamoDB
+var svc *dynamodb.DynamoDB
 
 func init() {
 	region := os.Getenv("AWS_REGION")
@@ -47,7 +47,7 @@ func init() {
 		fmt.Println(fmt.Sprintf("Failed to initialize a session to AWS: %s", err.Error()))
 	} else {
 		// Create DynamoDB client
-		ddbSvc = dynamodb.New(session)
+		svc = dynamodb.New(session)
 	}
 }
 
@@ -109,7 +109,7 @@ func Create(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 		Item:      item,
 		TableName: tableName,
 	}
-	if _, err := ddbSvc.PutItem(params); err != nil {
+	if _, err := svc.PutItem(params); err != nil {
 		// Error HTTP response
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
