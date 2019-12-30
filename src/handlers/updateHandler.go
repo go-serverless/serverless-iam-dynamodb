@@ -65,7 +65,7 @@ func Update(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 	validate = validator.New()
 	err := validate.Struct(user)
 	if err != nil {
-		// Error HTTP response
+		// Status Bad Request
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
 			StatusCode: 400,
