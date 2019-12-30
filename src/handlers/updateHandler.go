@@ -98,7 +98,7 @@ func Update(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 	expression, err := builder.Build()
 
 	if err != nil {
-		// Error HTTP response
+		// Status Bad Request
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
 			StatusCode: 400,
@@ -122,13 +122,13 @@ func Update(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 	if err != nil {
 		fmt.Println("Got error calling UpdateItem:")
 		fmt.Println(err.Error())
-		// Error HTTP response
+		// Status Internal Server Error
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
 			StatusCode: 500,
 		}, nil
 	} else {
-		// Success HTTP response
+		// Status OK
 		return events.APIGatewayProxyResponse{
 			Body:       request.Body,
 			StatusCode: 200,

@@ -66,7 +66,7 @@ func Get(ctx context.Context, request events.APIGatewayProxyRequest) (events.API
 	if err != nil {
 		fmt.Println("Got error calling GetItem:")
 		fmt.Println(err.Error())
-		// Error HTTP response
+		// Status Internal Server Error
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
 			StatusCode: 500,
@@ -88,7 +88,7 @@ func Get(ctx context.Context, request events.APIGatewayProxyRequest) (events.API
 		Response: user,
 	})
 
-	// Success HTTP response
+	// Status OK
 	return events.APIGatewayProxyResponse{
 		Body:       string(body),
 		StatusCode: 200,

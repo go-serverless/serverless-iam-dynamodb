@@ -64,7 +64,7 @@ func List(ctx context.Context, request events.APIGatewayProxyRequest) (events.AP
 	if err != nil {
 		fmt.Println("Query API call failed:")
 		fmt.Println((err.Error()))
-		// Error HTTP response
+		// Status Bad Request
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
 			StatusCode: 400,
@@ -90,7 +90,7 @@ func List(ctx context.Context, request events.APIGatewayProxyRequest) (events.AP
 		Response: users,
 	})
 
-	// Success HTTP response
+	// Status OK
 	return events.APIGatewayProxyResponse{
 		Body:       string(body),
 		StatusCode: 200,

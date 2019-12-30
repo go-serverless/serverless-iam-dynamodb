@@ -46,13 +46,13 @@ func Delete(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 		fmt.Println("Got error calling DeleteItem:")
 		fmt.Println(err.Error())
 
-		// Error HTTP response
+		// Status Internal Server Error
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
 			StatusCode: 500,
 		}, nil
 	} else {
-		// Success HTTP response
+		// Status No Content
 		return events.APIGatewayProxyResponse{
 			StatusCode: 204,
 		}, nil

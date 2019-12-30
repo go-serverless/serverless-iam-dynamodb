@@ -74,7 +74,7 @@ func Create(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 	validate = validator.New()
 	err := validate.Struct(user)
 	if err != nil {
-		// Error HTTP response
+		// Status Bad Request
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
 			StatusCode: 400,
@@ -86,7 +86,7 @@ func Create(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 	if err != nil {
 		fmt.Println("Got error calling HashPassword:")
 		fmt.Println(err.Error())
-		// Error HTTP response
+		// Status Bad Request
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
 			StatusCode: 400,
@@ -98,7 +98,7 @@ func Create(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 	if err != nil {
 		fmt.Println("Got error calling MarshalMap:")
 		fmt.Println(err.Error())
-		// Error HTTP response
+		// Status Bad Request
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
 			StatusCode: 400,
@@ -110,14 +110,14 @@ func Create(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 		TableName: tableName,
 	}
 	if _, err := svc.PutItem(params); err != nil {
-		// Error HTTP response
+		// Status Internal Server Error
 		return events.APIGatewayProxyResponse{
 			Body:       err.Error(),
 			StatusCode: 500,
 		}, nil
 	} else {
 		body, _ := json.Marshal(user)
-		// Success HTTP response
+		// Status OK
 		return events.APIGatewayProxyResponse{
 			Body:       string(body),
 			StatusCode: 200,
