@@ -4,6 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
+	"reflect"
+	"strings"
+	"time"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
@@ -11,10 +16,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 	"gopkg.in/go-playground/validator.v9"
-	"os"
-	"reflect"
-	"strings"
-	"time"
 )
 
 var svc *dynamodb.DynamoDB
@@ -127,13 +128,13 @@ func Update(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 			Body:       err.Error(),
 			StatusCode: 500,
 		}, nil
-	} else {
-		// Status OK
-		return events.APIGatewayProxyResponse{
-			Body:       request.Body,
-			StatusCode: 200,
-		}, nil
 	}
+
+	// Status OK
+	return events.APIGatewayProxyResponse{
+		Body:       request.Body,
+		StatusCode: 200,
+	}, nil
 }
 
 func main() {

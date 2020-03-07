@@ -3,12 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
-	"os"
 )
 
 var svc *dynamodb.DynamoDB
@@ -51,12 +52,12 @@ func Delete(ctx context.Context, request events.APIGatewayProxyRequest) (events.
 			Body:       err.Error(),
 			StatusCode: 500,
 		}, nil
-	} else {
-		// Status No Content
-		return events.APIGatewayProxyResponse{
-			StatusCode: 204,
-		}, nil
 	}
+
+	// Status No Content
+	return events.APIGatewayProxyResponse{
+		StatusCode: 204,
+	}, nil
 }
 
 func main() {
