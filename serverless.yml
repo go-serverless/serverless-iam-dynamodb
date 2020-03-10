@@ -32,6 +32,7 @@ provider:
   region: ap-southeast-1
   environment:
     IAM_TABLE_NAME: ${self:custom.iamTableName}
+    JWT_SECRET_KEY: <YOUR_JWT_SECRET_KEY> # TODO: Replace <YOUR_JWT_SECRET_KEY> with your JWT Secret Key
   iamRoleStatements: # Defines what other AWS services our lambda functions can access
     - Effect: Allow # Allow access to DynamoDB tables
       Action:
