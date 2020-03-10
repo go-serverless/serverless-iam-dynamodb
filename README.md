@@ -109,7 +109,7 @@ service: serverless-iam-dynamodb
 stage: dev
 region: ap-southeast-1
 stack: serverless-iam-dynamodb-dev
-resources: 30
+resources: 47
 api keys:
   None
 endpoints:
