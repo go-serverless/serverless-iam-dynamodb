@@ -41,17 +41,17 @@ aws configure
 
 Of course you need to install [Go](https://golang.org/doc/install)
 
-> By default, a custom authorizer has been enabled for ``create``, ``list``, ``update``, ``delete`` and ``get``. Please replace ``<YOUR_JWT_SECRET_KEY>`` with your JWT Secret Key in serverless.yml.  
-```yml
- JWT_SECRET_KEY: <YOUR_JWT_SECRET_KEY> # TODO: Replace <YOUR_JWT_SECRET_KEY> with your JWT Secret Key
-```
+## Getting started
+> By default, a custom authorizer has been enabled for ``create``, ``list``, ``update``, ``delete`` and ``get``. Please replace ``<YOUR_JWT_SECRET_KEY>`` with your JWT Secret Key in serverless.yml (Line 35).  
 
-## Building the code
+### Building the code
+This script compiles functions to ``bin/handlers/``. 
 ```
 ./scripts/build.sh
 ```
 
-## Deploying to AWS
+### Deploying to AWS
+This script includes the build script and triggers serverless deploy, which will create/update a single CloudFormation stack to provision/update corresponding resources.
 ```
 ./scripts/deploy.sh
 ```
