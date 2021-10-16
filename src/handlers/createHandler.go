@@ -13,11 +13,10 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+	"github.com/go-serverless/serverless-iam-dynamodb/src/utils"
 	"gopkg.in/go-playground/validator.v9"
 
-	"github.com/satori/go.uuid"
-
-	utils "../utils"
+	uuid "github.com/satori/go.uuid"
 )
 
 type User struct {
@@ -53,7 +52,7 @@ func init() {
 
 func Create(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var (
-		id        = uuid.Must(uuid.NewV4()).String()
+		id        = uuid.Must(uuid.NewV4(), nil).String()
 		tableName = aws.String(os.Getenv("IAM_TABLE_NAME"))
 	)
 

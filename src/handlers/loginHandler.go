@@ -12,8 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-
-	utils "../utils"
+	"github.com/go-serverless/serverless-iam-dynamodb/src/utils"
 )
 
 type Credentials struct {

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-dep ensure
+echo "************************************************"
+echo "* Formatting Code ...                           "
+echo "************************************************"
+go fmt src/handlers/*
 
 echo "************************************************"
 echo "* Compiling functions to bin/handlers/ ...      "
@@ -8,8 +11,7 @@ echo "************************************************"
 
 rm -rf bin/
 
-cd src/handlers/
-for f in *.go; do
+for f in src/handlers/*.go; do
   filename="${f%.go}"
   if GOOS=linux go build -o "../../bin/handlers/$filename" ${f}; then
     echo "* Compiled $filename"
@@ -18,11 +20,6 @@ for f in *.go; do
     exit 1
   fi
 done
-
-echo "************************************************"
-echo "* Formatting Code ...                           "
-echo "************************************************"
-go fmt
 
 echo "************************************************"
 echo "* Build Completed                               "

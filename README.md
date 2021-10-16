@@ -24,17 +24,21 @@ General functions go here
 
 ## Prerequisites
 
-You need to install serverless cli
+Install serverless cli
 ```
 npm install -g serverless
 ```
 
-You need to install aws cli 
+Install aws cli 
 ```
 pip install awscli
 ```
 
-and setup your aws credentials
+Install dependency management tool dep
+
+brew install dep
+
+Setup your aws credentials
 ```
 aws configure
 ```
