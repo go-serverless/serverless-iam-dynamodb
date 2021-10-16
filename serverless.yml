@@ -51,8 +51,6 @@ provider:
 
 package:
  individually: true
- exclude:
-   - ./**
 
 functions:
   auth:
