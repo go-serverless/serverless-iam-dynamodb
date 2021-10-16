@@ -34,10 +34,6 @@ Install aws cli
 pip install awscli
 ```
 
-Install dependency management tool dep
-
-brew install dep
-
 Setup your aws credentials
 ```
 aws configure
